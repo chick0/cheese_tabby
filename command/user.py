@@ -6,6 +6,8 @@ from discord import File
 from discord import errors
 from discord.ext import commands
 
+from module.url import get_link
+
 
 class Command(commands.Cog, name="Command for @everyone"):
     @commands.command(help="Check connected guilds")
@@ -13,8 +15,17 @@ class Command(commands.Cog, name="Command for @everyone"):
     async def guilds(self, ctx: commands.context):
         await ctx.send(
             "```\n"
-            f" - Connected to ( {len(ctx.bot.guilds)} ) guilds!\n"
+            f" - Connected to ( {len(ctx.bot.guilds)} ) guilds,\n"
+            f"   with using ( {ctx.bot.shard_count} ) shards!"
             "```"
+        )
+
+    @commands.command(help="Send invite link to you")
+    @commands.cooldown(2, 5, commands.BucketType.user)
+    async def invite(self, ctx: commands.context):
+        await ctx.author.send(
+            "> Link is here\n"
+            f"{get_link(bot=ctx.bot)}"
         )
 
     @commands.command(help="Send Cat image! (random or custom)")

@@ -72,6 +72,8 @@ async def on_message(message):
     if not message.author.bot and not isinstance(message.channel, PrivateChannel):
         for word in load(fp=open(path.join("words", "words.json"))):
             if word in message.content.lower():
+                logger.info(f"'{message.author}' Called the Cat! Used Word: {word} '{message.content}'")
+
                 s = listdir(path.join("img_storage"))
                 image_id = s[randint(0, len(s) - 1)]
 
@@ -87,7 +89,7 @@ async def on_message(message):
                 try:
                     await e.add_reaction("❌")
                 except errors.Forbidden:
-                    await e.channel.send("[Add Reactions] is required for this bot!")
+                    await e.channel.send("[Add Reactions] and [Read Message History] is required for this bot!")
 
 
 async def on_raw_reaction_add(payload: RawReactionActionEvent, bot):
