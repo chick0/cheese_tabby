@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from time import sleep
 from logging import getLogger
 
 import aiohttp
