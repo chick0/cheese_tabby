@@ -14,9 +14,9 @@ class Task(commands.Cog):
         self.bot = bot
         self.endpoint = "https://top.gg/api/bots/stats"
         self.headers = {
-            'User-Agent': f"PythonBot aiohttp/{aiohttp.__version__}",
-            'Content-Type': 'application/json',
-            'Authorization': config["token"]["top.gg"]
+            "User-Agent": f"PythonBot aiohttp/{aiohttp.__version__}",
+            "Content-Type": 'application/json',
+            "Authorization": config["token"]["top.gg"]
         }
 
         self.post_count.start()
