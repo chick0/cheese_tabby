@@ -10,15 +10,12 @@ log_file_path = "log"
 log_file_name = strftime("%Y-%m-%d %Hh %Mm %Ss.log", localtime(time()))
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s", "%Y-%m-%d %H:%M:%S")
 
-
-try:
-    file = logging.FileHandler(path.join(log_file_path, log_file_name))
-    file.setFormatter(log_formatter)
-except FileNotFoundError:
+if not path.exists(path.join(log_file_path)):
     mkdir(log_file_path)
-    file = logging.FileHandler(path.join(log_file_path, log_file_name))
-    file.setFormatter(log_formatter)
 
+
+file = logging.FileHandler(path.join(log_file_path, log_file_name))
+file.setFormatter(log_formatter)
 
 console = logging.StreamHandler()
 console.setFormatter(log_formatter)
