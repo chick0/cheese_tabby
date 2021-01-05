@@ -15,8 +15,7 @@ for file in queue:
             tmp = fp.read()
 
         tmp = tmp.replace("\n", ",").replace(" ", "").split(",")
-        for w in tmp:
-            words.append(w)
+        words.extend(tmp)
 
 logger.info(f"Number of registered words '{len(words)}'")
 dump(obj=words,
