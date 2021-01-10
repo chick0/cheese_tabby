@@ -88,6 +88,7 @@ async def on_message(message):
                     await e.add_reaction("❌")
                 except errors.Forbidden:
                     await e.channel.send("[Add Reactions] and [Read Message History] is required for this bot!")
+                return
 
 
 async def on_raw_reaction_add(payload: RawReactionActionEvent, bot):
