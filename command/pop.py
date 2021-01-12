@@ -18,7 +18,7 @@ class Command(commands.Cog, name="Pop Cat Commend"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.check(is_public)
     async def pop(self, ctx: commands.context):
-        await ctx.send(
+        await ctx.reply(
             file=File(fp=open(path.join("src", "pop.gif"), mode="rb"))
         )
 

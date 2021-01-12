@@ -3,7 +3,7 @@ from os import path, listdir
 from random import randint
 
 from discord import File
-from discord import errors
+from discord.errors import Forbidden
 from discord.ext import commands
 
 from module.url import get_link
@@ -13,7 +13,7 @@ class Command(commands.Cog, name="Command for @everyone"):
     @commands.command(help="Check connected guilds")
     @commands.cooldown(3, 5, commands.BucketType.user)
     async def guilds(self, ctx: commands.context):
-        await ctx.send(
+        await ctx.reply(
             "```\n"
             f" - Connected to ( {len(ctx.bot.guilds)} ) guilds,\n"
             f"   with using ( {ctx.bot.shard_count} ) shards!"
@@ -23,10 +23,13 @@ class Command(commands.Cog, name="Command for @everyone"):
     @commands.command(help="Send invite link to you")
     @commands.cooldown(2, 5, commands.BucketType.user)
     async def invite(self, ctx: commands.context):
-        await ctx.author.send(
-            "> Link is here\n"
-            f"{get_link(bot=ctx.bot)}"
-        )
+        try:
+            await ctx.author.send(
+                "> Link is here\n"
+                f"{get_link(bot=ctx.bot)}"
+            )
+        except Forbidden:
+            await ctx.reply(f"`{get_link(bot=ctx.bot)}`")
 
     @commands.command(help="Send Cat image! (random or custom)")
     @commands.cooldown(3, 5, commands.BucketType.user)
@@ -37,15 +40,15 @@ class Command(commands.Cog, name="Command for @everyone"):
 
         if path.exists(path.join("img_storage", image_id)):
             try:
-                await ctx.send(
+                await ctx.reply(
                     file=File(fp=open(path.join("img_storage", image_id), mode="rb"),
                               filename=f"{image_id}.png")
                 )
-            except errors.Forbidden:
-                await ctx.send("[Attach Files] is required for this bot!")
+            except Forbidden:
+                await ctx.reply("[Attach Files] is required for this bot!")
 
         else:
-            await ctx.send(
+            await ctx.reply(
                 "```\n"
                 " 404\n"
                 " - Image not found!!!\n"
