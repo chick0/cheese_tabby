@@ -3,15 +3,14 @@
 from os import path, remove
 from logging import getLogger
 
-import discord
 from discord.ext import commands
+from discord.errors import LoginFailure
 
 from conf import conf
-from command import owner, pop, user
+from command import owner, user
 from task import topgg
 
-from module import log
-from module import words
+from module import log, words
 from module import event
 logger = getLogger()
 
