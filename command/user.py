@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from io import BytesIO
 from os import path, listdir
 from random import randint
 
@@ -7,6 +8,7 @@ from discord.errors import Forbidden
 from discord.ext import commands
 
 from module.url import get_link
+from module.cache import set_cache, get_cache
 
 
 class Command(commands.Cog, name="Command for @everyone"):
@@ -39,9 +41,14 @@ class Command(commands.Cog, name="Command for @everyone"):
             image_id = s[randint(0, len(s) - 1)]
 
         if path.exists(path.join("img_storage", image_id)):
+            image = get_cache(image_id)
+            if image is None:
+                image = open(path.join("img_storage", image_id), mode="rb").read()
+                set_cache(image_id, image)
+
             try:
                 await ctx.reply(
-                    file=File(fp=open(path.join("img_storage", image_id), mode="rb"),
+                    file=File(fp=BytesIO(image),
                               filename=f"{image_id}.png")
                 )
             except Forbidden:

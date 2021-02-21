@@ -12,15 +12,18 @@ from task import topgg
 
 from module import log, words
 from module import event
+from module.message import on_message
+
+
 logger = getLogger()
 
 
 if __name__ == "__main__":
-    if config["bot"]["use_shard"].lower() == "true":
-        bot = commands.AutoShardedBot(command_prefix=config["bot"]["prefix"])
+    if conf["bot"]["use_shard"].lower() == "true":
+        bot = commands.AutoShardedBot(command_prefix=conf["bot"]["prefix"])
         logger.info("Client is 'AuthShard' Client")
     else:
-        bot = commands.Bot(command_prefix=config["bot"]["prefix"])
+        bot = commands.Bot(command_prefix=conf["bot"]["prefix"])
         logger.info("Client is 'Normal' Client")
 
     async def call_on_ready():
@@ -32,29 +35,28 @@ if __name__ == "__main__":
     bot.add_listener(call_on_ready, "on_ready")
     bot.add_listener(event.on_command, "on_command")
     bot.add_listener(event.on_command_error, "on_command_error")
-    bot.add_listener(event.on_message, "on_message")
+    bot.add_listener(on_message, "on_message")
     bot.add_listener(call_on_raw_reaction_add, "on_raw_reaction_add")
 
     bot.add_cog(owner.Command(bot))
-    bot.add_cog(pop.Command(bot))
     bot.add_cog(user.Command(bot))
 
     try:
-        if config["token"]["top.gg"] != "YOUR_TOKEN":
+        if conf["token"]["top.gg"] != "YOUR_TOKEN":
             bot.add_cog(topgg.Task(bot))
             logger.info("Top.gg Counter is enabled")
     except KeyError:
         pass
 
     try:
-        bot.run(config["token"]["discord"])
+        bot.run(conf["token"]["discord"])
     except KeyError:
         with open(path.join("conf", "token.ini"), mode="w", encoding="utf-8") as fp:
             fp.write("[token]\n")
             fp.write("discord=YOUR_TOKEN\n")
             fp.write("top.gg=YOUR_TOKEN")
         logger.critical("Token not found. Edit the file './conf/token.ini'")
-    except discord.errors.LoginFailure:
+    except LoginFailure:
         logger.critical("Fail to Login. Edit the file './conf/token.ini'")
     except Exception as st_error:
         logger.critical(f"Fail to start Bot | {st_error.__class__.__name__}: {st_error}")
