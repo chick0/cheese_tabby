@@ -4,7 +4,7 @@ from logging import getLogger
 import aiohttp
 from discord.ext import commands, tasks
 
-from config import config
+from conf import conf
 
 logger = getLogger()
 
@@ -16,7 +16,7 @@ class Task(commands.Cog):
         self.headers = {
             "User-Agent": f"PythonBot aiohttp/{aiohttp.__version__}",
             "Content-Type": 'application/json',
-            "Authorization": config["token"]["top.gg"]
+            "Authorization": conf["token"]["top.gg"]
         }
 
         self.post_count.start()

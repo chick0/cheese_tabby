@@ -6,7 +6,7 @@ from logging import getLogger
 import discord
 from discord.ext import commands
 
-from config import config
+from conf import conf
 from command import owner, pop, user
 from task import topgg
 

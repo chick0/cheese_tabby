@@ -10,7 +10,8 @@ from discord.abc import PrivateChannel
 from discord import RawReactionActionEvent
 from discord import Status, Activity, ActivityType
 
-from config import config
+from conf import conf
+
 
 logger = getLogger()
 
